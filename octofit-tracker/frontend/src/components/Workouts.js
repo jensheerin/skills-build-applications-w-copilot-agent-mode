@@ -1,0 +1,45 @@
+
+const API_URL = `https://${process.env.REACT_APP_CODESPACE_NAME}-8000.app.github.dev/api/workouts/`;
+
+function Workouts() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch(API_URL)
+      .then(res => res.json())
+      .then(json => {
+        const results = json.results || json;
+        setData(results);
+        console.log('Workouts API endpoint:', API_URL);
+        console.log('Fetched workouts:', results);
+      });
+  }, []);
+
+  return (
+    <div>
+      <h2 className="mb-4">Workouts</h2>
+      <div className="card">
+        <div className="card-body">
+          <table className="table table-striped table-hover">
+            <thead className="table-primary">
+              <tr>
+                <th>Name</th>
+                <th>Suggestion</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((item, idx) => (
+                <tr key={idx}>
+                  <td>{item.name}</td>
+                  <td>{item.suggestion}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Workouts;
